@@ -1,104 +1,109 @@
 import pytest
 from ten_thousand.game_logic import GameLogic
 
-
+# 1 -  Passing
 def test_single_five():
     actual = GameLogic.calculate_score((5,))
     expected = 50
     assert actual == expected
 
 
-@pytest.mark.skip
+# 2 -  Passing
+# @pytest.mark.skip
 def test_single_one():
     actual = GameLogic.calculate_score((1,))
     expected = 100
     assert actual == expected
 
 
-@pytest.mark.skip
+# 3 -  Passing
+# @pytest.mark.skip
 def test_two_fives():
     actual = GameLogic.calculate_score((5, 5))
     expected = 100
     assert actual == expected
 
-@pytest.mark.skip
+
+# 4 - Passing
+# @pytest.mark.skip
 def test_two_ones():
     actual = GameLogic.calculate_score((1, 1))
     expected = 200
     assert actual == expected
 
 
-@pytest.mark.skip
+# 5 - Passing
+# @pytest.mark.skip
 def test_one_and_five():
     actual = GameLogic.calculate_score((1, 5))
     expected = 150
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_zilch():
     actual = GameLogic.calculate_score((2,))
     expected = 0
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_three_fives():
     actual = GameLogic.calculate_score((5, 5, 5, 2, 2, 3))
     expected = 500
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_three_ones():
     actual = GameLogic.calculate_score((1, 1, 1, 2, 3, 4))
     expected = 1000
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_three_ones_and_a_five():
     actual = GameLogic.calculate_score((1, 1, 1, 5))
     expected = 1050
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_straight():
     actual = GameLogic.calculate_score((1, 6, 3, 2, 5, 4))
     expected = 1500
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_three_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2))
     expected = 200
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_four_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2))
     expected = 400
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_five_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2, 2))
     expected = 600
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_six_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2, 2, 2))
     expected = 800
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_six_ones():
     actual = GameLogic.calculate_score((1, 1, 1, 1, 1, 1))
     expected = 4000
