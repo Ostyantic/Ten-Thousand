@@ -110,7 +110,7 @@ def test_six_ones():
     assert actual == expected
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 @pytest.mark.parametrize(
     "test_input,expected",
     [
