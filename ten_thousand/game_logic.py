@@ -22,7 +22,11 @@ class GameLogic:
 
     score_combinations = {
         "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0,
         "5": 50,
+        "6": 0,
         "3 of a kind": {
             "1": 1000,
             "2": 200,
@@ -55,7 +59,9 @@ class GameLogic:
             "5": 2000,
             "6": 2400
         },
-        "straight": 1500
+        "straight": 1500,
+        "3 pairs": 1500,
+        "2 sets of 3": 1200,
     }
 
     @staticmethod
@@ -85,21 +91,25 @@ class GameLogic:
         if sorted(combination) == [1, 2, 3, 4, 5, 6]:
             total_score += GameLogic.score_combinations['straight']
             return total_score
+        elif sorted(combination) == [2, 2, 3, 3, 6, 6]:
+            total_score += GameLogic.score_combinations['3 pairs']
+            return total_score
+        elif sorted(combination) == [1, 1, 1, 2, 2, 2]:
+            total_score += GameLogic.score_combinations['2 sets of 3']
+            return total_score
+
         for key in ['6 of a kind', '5 of a kind', '4 of a kind', '3 of a kind']:
             for value in combination:
                 if combination.count(value) >= int(key[0]):
                     total_score += GameLogic.score_combinations[key][str(value)]
-                    dice = [x for x in combination if x != value]
+                    combination = [x for x in combination if x != value]
                     if key == '6 of a kind':
-                        dice = []
+                        combination = []
                     break
         for value in combination:
             total_score += GameLogic.score_combinations[str(value)]
         print(total_score)
         return total_score
-
-
-
 
 
 if __name__ == "__main__":
