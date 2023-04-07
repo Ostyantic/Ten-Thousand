@@ -20,8 +20,8 @@ from collections import Counter
 
 class GameLogic:
 
-    def __init__(self):
-        self.score = 0
+    # def __init__(self):
+    #     self.score = 0
 
     score_combinations = {
         "1": 100,
@@ -64,7 +64,6 @@ class GameLogic:
         },
         "straight": 1500,
         "3 pairs": 1500,
-        # "2 sets of 3": 1200,
     }
 
     @staticmethod
@@ -94,12 +93,32 @@ class GameLogic:
         if sorted(combination) == [1, 2, 3, 4, 5, 6]:
             total_score += GameLogic.score_combinations['straight']
             return total_score
+        # if counts == Counter({1: 3, 2: 3}):
+        #     total_score += GameLogic.score_combinations['3 of a kind'][str(1)] + \
+        #                    GameLogic.score_combinations['3 of a kind'][str(2)]
+        #     return total_score
+        if len(counts.most_common()) >= 2 and counts.most_common()[0][1] == 3 and counts.most_common()[1][1] == 3:
+            total_score = GameLogic.score_combinations['3 of a kind'][str(counts.most_common()[0][0])] \
+                          + GameLogic.score_combinations['3 of a kind'][str(counts.most_common()[1][0])]
+            return total_score
+        # if counts == Counter({1: 3, 2: 3}):
+        #     total_score += GameLogic.score_combinations['3 of a kind'][str(1)] + GameLogic.score_combinations['3 of a kind'][str(2)]
+        #     return total_score
         if len(counts) == 3 and all(count == 2 for count in counts.values()):
             total_score += GameLogic.score_combinations['3 pairs']
             return total_score
-        # if len(counts) == 2 and all(count == 3 for count in counts.values()):
-        #     total_score += GameLogic.score_combinations['2 sets of 3']
+
+        # counts = Counter(combination)
+        # if sorted(combination) == [1, 2, 3, 4, 5, 6]:
+        #     total_score += GameLogic.score_combinations['straight']
         #     return total_score
+        # if counts == Counter({1: 3, 2: 3}):
+        #     total_score += GameLogic.score_combinations['3 of a kind'][str(1)] * 2
+        #     return total_score
+        # if counts == Counter({1: 2, 2: 2, 3: 2}):
+        #     total_score += GameLogic.score_combinations['3 pairs']
+        #     return total_score
+   # so we need to verify len 6, quantity of 1st most common is 3, quantity of the 2nd most common is also 3, then add the scores
 
         for key in ['6 of a kind', '5 of a kind', '4 of a kind', '3 of a kind']:
             for value in combination:
