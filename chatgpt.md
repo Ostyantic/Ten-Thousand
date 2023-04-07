@@ -1,4 +1,4 @@
-##ChatGPT Prompts and Responses
+# ChatGPT Prompts and Responses
 
 ## Lauren
 
@@ -383,16 +383,6 @@ score_combinations = {
 
 This will add a new key-value pair ("2": 0) to the dictionary, which will prevent the KeyError from being raised when the calculate_score method is called with a tuple containing the value 2.# Chat GPT Prompts & Responses
 
-
-
-
-
-
-
-
-
-# Chat GPT Prompts & Responses
-
 ## Anthony
 
 Prompt:
@@ -425,13 +415,16 @@ def calculate_score(combination):
 Follow-up:
 
 Can you write a python dictionary that contains the different score combinations in the game "ten thousand"?
+ 
+dict is same as lauren and danner
 
-Response:
+## Danner prompts & results
 
-```py
-scores = {
+> **Question:** 
+> how to create a counter from this score combination when the integers will be in a list 
+
+    scores = {
     "1": 100,
-
     "5": 50,
     "3 of a kind": {
         "1": 1000,
@@ -464,7 +457,24 @@ scores = {
         "4": 1600,
         "5": 2000,
         "6": 2400
-    },
-    "straight": 1500
-}
+    },  "straight": 1500 
+    }
 
+```py
+def count_score(dice):
+    counter = 0
+    if sorted(dice) == [1, 2, 3, 4, 5, 6]:
+        counter += scores["straight"]
+        return counter
+    for key in ["6 of a kind", "5 of a kind", "4 of a kind", "3 of a kind"]:
+        for value in dice:
+            if dice.count(value) >= int(key[0]):
+                counter += scores[key][str(value)]
+                dice = [x for x in dice if x != value]
+                if key == "6 of a kind":
+                    dice = []
+                break
+    for value in dice:
+        counter += scores[str(value)]
+    return counter
+```
