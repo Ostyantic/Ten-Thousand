@@ -379,15 +379,16 @@ score_combinations = {
     },
     "straight": 1500
 }
-
+```
 
 This will add a new key-value pair ("2": 0) to the dictionary, which will prevent the KeyError from being raised when the calculate_score method is called with a tuple containing the value 2.# Chat GPT Prompts & Responses
 
 ## Anthony
 
 Prompt:
- ```py
- def calculate_score(combination):
+ ```python
+ 
+def calculate_score(combination):
     """
     Calculates the score depending on the combination of 6 randomly generated numbers in a tuples
     :param combination: tuple of 6 integers representing different dice combinations
@@ -398,7 +399,29 @@ Prompt:
 
 Response:
 
-```py
+It seems that the given function calculate_score takes in a tuple of 6 integers representing different dice combinations, and returns an integer representing a score. The function first converts the input tuple into a dictionary-like object called Counter using the collections module, which will count the occurrences of each element in the tuple.
+
+However, the function does not return anything after performing this operation on the input combination. Therefore, the function will not be able to calculate the score as intended.
+
+To fix this, the function should perform some operation on the Counter object, such as summing up the scores for each dice combination or applying a scoring rule based on the values of the dice. Finally, the function should return the calculated score. Here's an example of how the function could be modified to sum up the values of all dice in the combination:
+
+```python
+from collections import Counter
+
+def calculate_score(combination):
+    """
+    Calculates the score depending on the combination of 6 randomly generated numbers in a tuples
+    :param combination: tuple of 6 integers representing different dice combinations
+    :return: An integer representing a score
+    """
+    counts = Counter(combination)
+    score = sum(counts.keys()) * sum(counts.values())
+    return score
+```
+
+In this example, the sum(counts.keys()) represents the sum of all unique dice values, and sum(counts.values()) represents the total number of dice. The product of these two values is then returned as the calculated score. Note that this is just one example of how the function could be modified, and there are many possible ways to calculate a score based on the input combination.
+
+```python
 from collections import Counter
 
 def calculate_score(combination):
@@ -415,8 +438,76 @@ def calculate_score(combination):
 Follow-up:
 
 Can you write a python dictionary that contains the different score combinations in the game "ten thousand"?
- 
-dict is same as lauren and danner
+
+Prompt:
+
+can you re-write this logic to check the length of counts to be equal to two and the most common instance in counts to be 3? 
+```python
+
+if counts == Counter({1: 3, 2: 3}):
+    total_score += GameLogic.score_combinations['3 of a kind'][str(1)] + GameLogic.score_combinations['3 of a kind'][str(2)]
+    return total_score
+```
+
+Response:
+
+```python
+counts = Counter(some_list)
+
+if len(counts) == 2 and counts.most_common(1)[0][1] == 3:
+    if counts.most_common(1)[0][0] in [1, 2]:
+        total_score += GameLogic.score_combinations['3 of a kind'][str(counts.most_common(1)[0][0])]
+    if counts.most_common(1)[0][0] in [3, 4, 5, 6]:
+        total_score += GameLogic.score_combinations['3 of a kind']['*']
+    return total_score
+```
+This code first creates a Counter object from some_list, and then checks if the length of the Counter is equal to 2, meaning that there are exactly two different values in some_list. It then checks if the most common value in counts appears three times, which is the requirement for getting a score for three of a kind.
+
+If both conditions are true, the code then checks if the most common value is either 1 or 2, in which case it adds the corresponding score for a three of a kind of that value to total_score. If the most common value is 3, 4, 5, or 6, the code adds the wildcard score for three of a kind to total_score. Finally, it returns the updated total_score.
+
+Prompt(follow-up):
+
+explain this
+```python
+counts = Counter(combination).most_common()
+```
+
+Response:
+
+This line of code is creating a Counter object from the combination iterable and then calling the most_common() method on it.
+
+The Counter class is a built-in Python class that is used to count the frequency of items in an iterable. When creating a Counter object from an iterable, the result is a dictionary-like object with keys that are the items in the iterable and values that are the count of how many times each item appears in the iterable.
+
+The most_common() method returns a list of tuples representing the items in the Counter object and their counts, sorted in descending order by count. In this case, since most_common() is being called with no arguments, it will return a list of all the items in the Counter object, sorted by their counts in descending order.
+
+So, the counts variable will be a list of tuples, where each tuple contains an item in the combination iterable and its count in descending order. For example, if combination is [1, 2, 2, 3, 3, 3, 4, 4, 4, 4], then counts will be [(4, 4), (3, 3), (2, 2), (1, 1)], indicating that the value 4 appears 4 times, the value 3 appears 3 times, the value 2 appears 2 times, and the value 1 appears 1 time in the combination iterable.
+
+Prompt(follow-up):
+
+write logic that checks the quantity of 1st most common is 3, quantity of the 2nd most common is also 3, then add the scores
+
+Response:
+
+```python
+from collections import Counter
+import GameLogic
+
+# `combination` is some iterable
+counts = Counter(combination).most_common()
+
+if len(counts) >= 2 and counts[0][1] == 3 and counts[1][1] == 3:
+    total_score = GameLogic.score_combinations['3 of a kind'][str(counts[0][0])] \
+                  + GameLogic.score_combinations['3 of a kind'][str(counts[1][0])]
+    return total_score
+```
+
+This code first creates a Counter object from the combination iterable and then calls most_common() to get a list of tuples representing the items in the Counter object and their counts, sorted by count in descending order.
+
+It then checks if the length of counts is at least 2 (to make sure there are at least 2 distinct items in combination), if the count of the most common item is 3, and if the count of the second most common item is also 3.
+
+If all of these conditions are true, the code calculates the total score by adding the scores for three of a kind of the two most common items in the combination iterable, using the score_combinations dictionary from the GameLogic module.
+
+Finally, the code returns the total score. Note that if the conditions are not met, the code will simply continue executing and not return any score.
 
 ## Danner prompts & results
 
@@ -478,3 +569,4 @@ def count_score(dice):
         counter += scores[str(value)]
     return counter
 ```
+
