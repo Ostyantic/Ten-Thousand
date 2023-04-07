@@ -160,3 +160,20 @@ def test_six_ones():
 def test_all(test_input, expected):
     actual = GameLogic.calculate_score(test_input)
     assert actual == expected
+
+
+def test_three_six():
+    actual = GameLogic.calculate_score((1, 1, 1, 6, 6, 6))
+    expected = 1600
+    assert actual == expected
+
+def test_three_three_four():
+    actual = GameLogic.calculate_score((3, 3, 3, 4, 4, 4))
+    expected = 700
+    assert actual == expected
+
+
+def test_3_pairs():
+    actual = GameLogic.calculate_score((1, 1, 2, 2, 6, 6))
+    expected = 1500
+    assert actual == expected
