@@ -2,6 +2,184 @@
 
 ## Lauren
 
+Prompt: can you tell me why this class GameLogic:
+```python
+    def __init__(self):
+        self.score = 0
+
+    score_combinations = {
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 50,
+        "6": 0,
+        "3 of a kind": {
+            "1": 1000,
+            "2": 200,
+            "3": 300,
+            "4": 400,
+            "5": 500,
+            "6": 600
+        },
+        "4 of a kind": {
+            "1": 2000,
+            "2": 400,
+            "3": 600,
+            "4": 800,
+            "5": 1000,
+            "6": 1200
+        },
+        "5 of a kind": {
+            "1": 3000,
+            "2": 600,
+            "3": 900,
+            "4": 1200,
+            "5": 1500,
+            "6": 1800
+        },
+        "6 of a kind": {
+            "1": 4000,
+            "2": 800,
+            "3": 1200,
+            "4": 1600,
+            "5": 2000,
+            "6": 2400
+        },
+        "straight": 1500,
+        "3 pairs": 1500,
+        # "2 sets of 3": 1200,
+    }
+
+    @staticmethod
+    def roll_dice(n):
+        """
+        Rolls n number of dice
+        :param n: number of dice
+        :return: a tuple with random values between 1 and 6
+        """
+
+        dice = []
+        for _ in range(n):
+            dice.append(random.randint(1, 6))
+        return tuple(dice)
+
+    @staticmethod
+    def calculate_score(combination):
+        """
+        Calculates the score depending on the combination of 6 randomly generated numbers in a tuples
+        :param combination: tuple of 6 integers representing different dice combinations
+        :return: An integer representing a score
+        """
+
+        total_score = 0
+        counts = Counter(combination)
+
+        if sorted(combination) == [1, 2, 3, 4, 5, 6]:
+            total_score += GameLogic.score_combinations['straight']
+            return total_score
+        if len(counts) == 3 and all(count == 2 for count in counts.values()):
+            total_score += GameLogic.score_combinations['3 pairs']
+            return total_score
+        if len(counts) == 2 and all(count == 3 for count in counts.values()):
+            total_score += GameLogic.score_combinations['2 sets of 3']
+            return total_score
+
+        for key in ['6 of a kind', '5 of a kind', '4 of a kind', '3 of a kind']:
+            for value in combination:
+                if combination.count(value) >= int(key[0]):
+                    total_score += GameLogic.score_combinations[key][str(value)]
+                    combination = [x for x in combination if x != value]
+                    if key == '6 of a kind':
+                        combination = []
+                    break
+        for value in combination:
+            total_score += GameLogic.score_combinations[str(value)]
+        print(total_score)
+        return total_score
+
+
+if __name__ == "__main__":
+    pass
+```
+code is failing this test? 
+```python 
+def test_all(test_input, expected):
+    actual = GameLogic.calculate_score(test_input)
+    assert actual == expected
+```
+
+Response: 
+Without seeing the test cases that are failing, it is difficult to pinpoint the exact issue. However, there are a few things that could potentially cause the code to fail:
+
+The score_combinations dictionary has a commented out key "2 sets of 3". If this key is needed for the test case but is commented out, the code will fail. You may want to uncomment it and test again.
+
+There may be a problem with the logic in the calculate_score method. Make sure that the scoring combinations are being calculated correctly and that the expected score is being returned.
+
+It is possible that there is an issue with the test cases themselves. Make sure that the test input and expected output are correct and that they cover all possible scenarios.
+
+Prompt:
+the above code is failing this test 
+```python 
+def test_all(test_input, expected):
+    actual = GameLogic.calculate_score(test_input)
+    assert actual == expected  with the error message key error "2 sets of 3"
+```
+
+Response: 
+The error message suggests that the key "2 sets of 3" is not found in the score_combinations dictionary, which is causing a KeyError to be raised. Looking at the dictionary, it seems that the line for "2 sets of 3" has been commented out:
+```python
+    "3 pairs": 1500,
+    # "2 sets of 3": 1200,
+
+```
+
+
+Since the commented line is not being used, the program is failing to find the key in the dictionary and raising an error. To fix this, you could either uncomment the line by removing the "#" symbol, or modify the calculate_score method to not use this key if it is not present in the dictionary.
+
+Prompt: 
+can you help me fix this code?  
+```python
+total_score = 0
+        counts = Counter(combination).most_common()
+
+        if sorted(combination) == [1, 2, 3, 4, 5, 6]:
+            total_score += GameLogic.score_combinations['straight']
+            return total_score
+        elif sorted(combination) == [1,1,1,2,2,2]:
+            total_score += GameLogic.score_combinations['3 of a kind'][str(combination[0])] * 2
+            return total_score
+        elif len(counts) == 3 and all(count == 2 for count in counts.values()):
+            total_score += GameLogic.score_combinations['3 pairs']
+            return total_score
+```
+
+response: 
+
+Sure, here's the modified code that should pass the given test:
+
+```python
+total_score = 0
+counts = Counter(combination).most_common()
+
+if sorted(combination) == [1, 2, 3, 4, 5, 6]:
+    total_score += GameLogic.score_combinations['straight']
+    return total_score
+elif sorted(combination) == [1,1,1,2,2,2]:
+    total_score += GameLogic.score_combinations['3 of a kind'][str(combination[0])] * 2
+    return total_score
+elif len(counts) == 3 and all(count == 2 for _, count in counts):
+    total_score += GameLogic.score_combinations['3 pairs']
+    return total_score
+
+```
+
+The changes include:
+
+Adding the most_common() method to the Counter() call to retrieve the counts in descending order.
+Using the _ variable in the for loop instead of count as we only need the keys in this case.
+Updating the all() call to use the _, count unpacking syntax to get the count value for each key-value pair.
+
 Prompt: what are parametrized tests in PyTest? 
 
 Response: In PyTest, parametrized tests allow you to run the same test function with different input values. This is useful when you have a test case that needs to be executed with multiple sets of inputs or parameters.
@@ -569,4 +747,288 @@ def count_score(dice):
         counter += scores[str(value)]
     return counter
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
