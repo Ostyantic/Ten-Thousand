@@ -20,6 +20,9 @@ from collections import Counter
 
 class GameLogic:
 
+    def __init__(self):
+        self.score = 0
+
     score_combinations = {
         "1": 100,
         "2": 0,
@@ -61,7 +64,7 @@ class GameLogic:
         },
         "straight": 1500,
         "3 pairs": 1500,
-        "2 sets of 3": 1200,
+        # "2 sets of 3": 1200,
     }
 
     @staticmethod
@@ -73,7 +76,7 @@ class GameLogic:
         """
 
         dice = []
-        for i in range(n):
+        for _ in range(n):
             dice.append(random.randint(1, 6))
         return tuple(dice)
 
@@ -91,12 +94,12 @@ class GameLogic:
         if sorted(combination) == [1, 2, 3, 4, 5, 6]:
             total_score += GameLogic.score_combinations['straight']
             return total_score
-        elif sorted(combination) == [2, 2, 3, 3, 6, 6]:
+        if len(counts) == 3 and all(count == 2 for count in counts.values()):
             total_score += GameLogic.score_combinations['3 pairs']
             return total_score
-        elif sorted(combination) == [1, 1, 1, 2, 2, 2]:
-            total_score += GameLogic.score_combinations['2 sets of 3']
-            return total_score
+        # if len(counts) == 2 and all(count == 3 for count in counts.values()):
+        #     total_score += GameLogic.score_combinations['2 sets of 3']
+        #     return total_score
 
         for key in ['6 of a kind', '5 of a kind', '4 of a kind', '3 of a kind']:
             for value in combination:
