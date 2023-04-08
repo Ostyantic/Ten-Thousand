@@ -50,11 +50,13 @@ def play(roll = GameLogic.roll_dice):
             print(f"Rolling {remaining} dice...")
             print(*dice_rolled(remaining))
             # if remaining 0: potential for further development
+            #in this roll, re-rolling the dice, getting a updated_banked_dice tuple to simulate our added points
+            updated_banked_dice = banked_dice + input_to_tuple(input("""Enter dice to keep, or (q)uit:
+                > """))
+            print (updated_banked_dice)
         elif choice == "q":
             print(f"Thanks for playing. You earned {total_score} points")
             break
-
-
 
 
 
