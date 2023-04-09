@@ -65,21 +65,11 @@ def play(roll = GameLogic.roll_dice):
             ##variable that is tracking unbanked points, their unbanked points, unbanked points, becomes zero
             #can use on all the dice, as well, doesn't be banked, on the user dice, could be passed as an arugement
             # and then added to unbanked points
-            #needs to be put in its own function, meaning each 
+            #needs to be put in its own function, meaning each
 
             print (updated_banked_dice)
             print(f"You have {round_score} unbanked points and {6 - len(updated_banked_dice)} dice remaining")
-            if remaining == 0:
-                    remaining = 6
-                    banked_dice = ()
-                    round_score += GameLogic.calculate_score(updated_banked_dice)
-                    print(f"You banked {round_score} points in round {round_number}")
-                    total_score += round_score
-                    round_number += 1
-                    round_score = 0
-            else:
-                    print(f"(r)oll again, (b)ank your points or (q)uit:")
-
+            # needs to be put in its own function, meaning each
         elif choice == "q":
             print(f"Thanks for playing. You earned {total_score} points")
             break
