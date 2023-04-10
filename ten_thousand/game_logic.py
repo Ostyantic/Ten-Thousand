@@ -42,6 +42,7 @@ class GameLogic:
                 #stash the dice already counted, and then continue to look through the remaining dice
                 # I need to do this because there are the possibility of 4,5,6
             num_dice_counted = num_dice_counted[1:]
+        #return total_score
 
     #two 3 of a kinds
 
