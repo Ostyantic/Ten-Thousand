@@ -37,6 +37,8 @@ def play(roll = GameLogic.roll_dice):
         if banked_dice == "q":
             print(f"Thanks for playing. You earned {total_score} points")
             break
+
+        round_score += GameLogic.calculate_score(banked_dice)
         remaining = remaining_dice(banked_dice)
         print (f"You have {GameLogic.calculate_score(banked_dice)} unbanked points and {remaining} dice remaining")
         choice = players_choice_rbq()
@@ -66,6 +68,8 @@ def play(roll = GameLogic.roll_dice):
             #can use on all the dice, as well, doesn't be banked, on the user dice, could be passed as an arugement
             # and then added to unbanked points
             #needs to be put in its own function, meaning each
+            round_number += 1
+            round_score = 0
 
             print (updated_banked_dice)
             print(f"You have {round_score} unbanked points and {6 - len(updated_banked_dice)} dice remaining")
@@ -74,6 +78,37 @@ def play(roll = GameLogic.roll_dice):
             print(f"Thanks for playing. You earned {total_score} points")
             break
 
+
+# def play(roll=GameLogic.roll_dice):
+#     total_score = 0
+#     round_number = 1
+#     banked_dice = []
+#     round_score = 0
+#     while True:
+#         print(f"Starting round {round_number}")
+#         dice_rolled = roll(6 - len(banked_dice))
+#         print(f"Rolling {len(dice_rolled)} dice...")
+#         print(*dice_rolled)
+#         banked_dice += input_to_tuple(input("Enter dice to keep, or (q)uit:\n>"))
+#         if banked_dice == "q":
+#             print(f"Thanks for playing. You earned {total_score} points")
+#             break
+#         round_score = GameLogic.calculate_score(banked_dice)
+#         remaining = remaining_dice(banked_dice)
+#         print(f"You have {round_score} unbanked points and {remaining} dice remaining")
+#         choice = players_choice_rbq()
+#         if choice == "b":
+#             total_score += round_score
+#             print(f"You banked {round_score} points in round {round_number}")
+#             banked_dice = []
+#             round_score = 0
+#             round_number += 1
+#             continue
+#         elif choice == "r":
+#             continue
+#         elif choice == "q":
+#             print(f"Thanks for playing. You earned {total_score} points")
+#             break
 
 
 #would it turn into the integer, or 111, iterate over a string and convert each character into a list
@@ -97,5 +132,4 @@ def players_choice_rbq():
     > """)
     return player_choice
 
-
-play()
+welcome()
