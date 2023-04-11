@@ -80,8 +80,8 @@ def play(roll = GameLogic.roll_dice):
                     return
             round_score += GameLogic.calculate_score(updated_banked_dice)
             total_score += round_score
-            print(f"You banked {round_score} points in round {round_number}")
-            round_number += 1
+            # print(f"You banked {round_score} points in round {round_number}")
+            # round_number += 1
             round_score = 0
 
         elif choice == "q":
