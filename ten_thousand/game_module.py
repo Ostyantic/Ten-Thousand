@@ -39,7 +39,7 @@ def play_round(roll, total_score):
 
     while True:
         print(f"Rolling {len(dice_rolled(6))} dice...")  # goes to dice function
-        print(*dice_rolled(6))
+        print('***', *dice_rolled(6), '***', sep=' ')
         # in process, subject to change
         banked_dice = input_to_tuple(input("""Enter dice to keep, or (q)uit:
         > """))
@@ -61,7 +61,7 @@ def play_round(roll, total_score):
                 if remaining == 0:
                     break
                 print(f"Rolling {remaining} dice...")
-                print(*dice_rolled(remaining))
+                print('***', *dice_rolled(remaining), '***', sep=' ')
                 new_roll = input_to_tuple(input("""Enter dice to keep, or (q)uit:
                     > """))
                 if new_roll == "q":
@@ -86,6 +86,7 @@ def play_round(roll, total_score):
 
 
 def input_to_tuple(input_string):
+    input_string = input_string.replace(' ', '')
     roll_list = []
     if input_string == "q":
         return "q"
