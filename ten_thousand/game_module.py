@@ -47,10 +47,22 @@ def play_round(roll, total_score):
         # in process, subject to change
 
         player_choice = banked_dice()
-        # banked_dice = input_to_tuple(input("""Enter dice to keep, or (q)uit:
-        # > """))
+        print("player choice: ", player_choice)
+        # print("testing the play round function")
         if player_choice == "q":
             return -1, total_score
+
+        # """ hot dice logic
+        if len(player_choice) == 6:
+            player_choice= hot_dice()
+            remaining = 6
+        # round_score += GameLogic.calculate_score(player_choice)
+            if type(player_choice) == tuple:
+
+                # print(f"You have {GameLogic.calculate_score(player_choice)} unbanked points and {remaining} dice remaining PLAY ROUND")
+                player_choice = banked_dice()
+            # else type(player_choice) == str:
+            # """
 
         round_score += GameLogic.calculate_score(player_choice)
         remaining = remaining_dice(player_choice)
@@ -120,6 +132,40 @@ def players_choice_rbq():
     > """)
     return player_choice
 
+def hot_dice(roll=GameLogic.roll_dice):
+        # print("hot dice")
+        dice_count = 6
+        while True:
+            dice_rolled = roll(dice_count)
+            print ("testing dice rolled", dice_rolled)
+
+            if dice_count == 6:
+                # print(f"Rolling {len(dice_rolled)} dice...")
+                # print('***', *dice_rolled, '***')
+                print(f"You have {GameLogic.calculate_score(dice_rolled)} unbanked points and {dice_count} dice remaining HOT DICE FUNCTION")
+                hot_dice_score = GameLogic.calculate_score(dice_rolled)
+                hot_dice_choice = input("""Do you want to (r)oll again, (b)ank your points, or (q)uit? 
+             >""")
+                # if player_choice == "q":
+                #     return
+                if hot_dice_choice == "r":
+                    # round_score = GameLogic.calculate_score(dice_rolled)
+                    # choice = players_choice_rbq()
+                    #
+                    print(f"Rolling {len(dice_rolled)} dice...")
+                    dice_rolled = roll(dice_count)
+                    print('***', *dice_rolled, '***')
+                    # print("testing dice rolled if player choice is r", dice_rolled)
+                    return dice_rolled
+
+                if hot_dice_choice == "b":
+                    # print(f"You banked {round_score} points in this round")
+                    # return banked_dice()
+                    return hot_dice_choice
+                elif hot_dice_choice == "q":
+                    # return decline()
+                    return hot_dice_choice
+                # return dice_rolled, hot_dice_choice
 
 if __name__ == "__main__":
     welcome()
