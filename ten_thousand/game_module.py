@@ -53,14 +53,14 @@ def play_round(roll, total_score):
             return -1, total_score
 
         # """ hot dice logic
-        if len(player_choice) == 6:
-            player_choice= hot_dice()
-            remaining = 6
-        # round_score += GameLogic.calculate_score(player_choice)
-            if type(player_choice) == tuple:
-
-                # print(f"You have {GameLogic.calculate_score(player_choice)} unbanked points and {remaining} dice remaining PLAY ROUND")
-                player_choice = banked_dice()
+        # if len(player_choice) == 6:
+        #     player_choice= hot_dice()
+        #     # remaining = 6
+        # # round_score += GameLogic.calculate_score(player_choice)
+        #     if type(player_choice) == tuple:
+        #
+        #         # print(f"You have {GameLogic.calculate_score(player_choice)} unbanked points and {remaining} dice remaining PLAY ROUND")
+        #         player_choice = banked_dice()
             # else type(player_choice) == str:
             # """
 
@@ -76,14 +76,15 @@ def play_round(roll, total_score):
             updated_banked_dice = player_choice
             while True:
                 remaining = remaining_dice(updated_banked_dice)
-                if remaining == 0:
-                    break
+                if len(dice_rolled(dice_count)) == 0:
+                    player_choice=hot_dice()
                 print(f"Rolling {remaining} dice...")
                 print('***', *dice_rolled(remaining), '***')
                 new_roll = input_to_tuple(input("""Enter dice to keep, or (q)uit:
                     > """))
                 if new_roll == "q":
                     return -1, total_score
+
                 updated_banked_dice += new_roll
                 round_score += GameLogic.calculate_score(new_roll)
                 remaining = remaining_dice(updated_banked_dice)
