@@ -31,26 +31,34 @@ def play_game(roll=GameLogic.roll_dice):
             return total_score
         round_number += 1
 
+    return total_score
+
     # print(f"Thanks for playing. You earned {total_score} points")
     # return total_score
 
 
 def play_round(roll, total_score):
     # banked_dice = []
-    dice_rolled = roll
-    round_score = 0
+    # dice_rolled = roll
     dice_count = 6
+    original_dice = roll(dice_count)
+    round_score = 0
 
     while True:
-        print(f"Rolling {len(dice_rolled(dice_count))} dice...")  # goes to dice function
-        print('***', *dice_rolled(dice_count), '***')
+        print(f"Rolling {len(original_dice)} dice...")  # goes to dice function
+        print('***', *original_dice, '***')
         # in process, subject to change
 
-        player_choice = banked_dice()
+        player_choice = banked_dice(original_dice)
         # banked_dice = input_to_tuple(input("""Enter dice to keep, or (q)uit:
         # > """))
         if player_choice == "q":
             return -1, total_score
+
+        # Verify that player only kept provided dice
+        if not set(player_choice).issubset(set(original_dice)):
+            print("Cheater!!! Or possibly made a typo...")
+            continue
 
         round_score += GameLogic.calculate_score(player_choice)
         remaining = remaining_dice(player_choice)
@@ -67,11 +75,15 @@ def play_round(roll, total_score):
                 if remaining == 0:
                     break
                 print(f"Rolling {remaining} dice...")
-                print('***', *dice_rolled(remaining), '***')
+                updated_dice = roll(remaining)
+                print('***', *updated_dice, '***')
                 new_roll = input_to_tuple(input("""Enter dice to keep, or (q)uit:
                     > """))
                 if new_roll == "q":
                     return -1, total_score
+                if not set(new_roll).issubset(set(updated_dice)):
+                    print("Cheater!!! Or possibly made a typo...")
+                    continue
                 updated_banked_dice += new_roll
                 round_score += GameLogic.calculate_score(new_roll)
                 remaining = remaining_dice(updated_banked_dice)
@@ -91,11 +103,46 @@ def play_round(roll, total_score):
             return -1, total_score
 
 
-def banked_dice():
-    player_choice = input_to_tuple(input("Enter dice to keep, or (q)uit:\n> "))
-    if player_choice == "q":
-        return "q"
-    return player_choice
+def banked_dice(original_dice):
+    while True:
+        player_choice = input_to_tuple(input("Enter dice to keep, or (q)uit:\n> "))
+        if player_choice == ("q", ):
+            return "q"
+        elif not check_for_cheater(original_dice, player_choice):
+            return player_choice
+
+
+# def check_for_cheater(original_dice, player_choice):
+#     if not set(player_choice).issubset(set(original_dice)) or \
+#             set(player_choice) != set(filter(lambda x: x in player_choice, original_dice)):
+#
+#         print("Cheater!!! Or possibly made a typo...")
+#         print('***', *original_dice, '***')
+#         return True
+#     return False
+
+# def check_for_cheater(original_dice, player_choice):
+#     original_dice_list = list(original_dice)
+#     player_choice_list = list(player_choice)
+#
+#     # sort the lists
+#     original_dice_list.sort()
+#     player_choice_list.sort()
+#
+#     # check if the player's choice is equal to the original dice
+#     if player_choice_list != original_dice_list:
+#         print("Cheater!!! Or possibly made a typo...")
+#         print(f"Original dice: {original_dice}")
+#         return True
+#     return False
+
+def check_for_cheater(original_dice, player_choice):
+    for value in tuple(player_choice):
+        if player_choice.count(value) > original_dice.count(value):
+            print("Cheater!!! Or possibly made a typo...")
+            print('***', *original_dice, '***')
+            return True
+    return False
 
 
 def input_to_tuple(input_string):
