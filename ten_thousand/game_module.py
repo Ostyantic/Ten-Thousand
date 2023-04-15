@@ -1,26 +1,26 @@
-from game_logic import *
+from ten_thousand.game_logic import *
 
 # currently_playing = True
 
+test_three_pairs = GameLogic([(1, 1, 2, 2, 3, 3)])
 
-def welcome():
+
+def play(roll=GameLogic.roll_dice):
     print("""Welcome to Ten Thousand
     (y)es to play or (n)o to decline""")
     prompt = input("> ")
 
     if prompt == "n":
-        decline()
+        print("OK. Maybe another time")
+        return
     else:
-        total_score = play_game()
+        # total_score = play_game()
+        total_score = play_game(roll)
         if total_score != -1:
             print(f"Thanks for playing. You earned {total_score} points")
 
 
-def decline():
-    print("OK. Maybe another time")
-
-
-def play_game(roll=GameLogic.roll_dice):
+def play_game(roll):
     total_score = 0
     round_number = 1
 
@@ -184,4 +184,4 @@ def hot_dice(length):
 
 
 if __name__ == "__main__":
-    welcome()
+    play()
