@@ -44,16 +44,27 @@ def play_round(roll, total_score, r):
         print(dice)
         print(f"Rolling {len(dice_rolled(dice_count))} dice...")
         # print('***', *dice_rolled(dice_count), '***')
+
         while True:
             print('***', *dice, '***')
             player_choice = banked_dice()
             validate = check_for_cheater(dice, player_choice)
             if validate == "q":
                 return -1, total_score
-            if not validate:
+            if validate is True:
                 print("Cheater!!! Or possibly made a typo...")
-            elif validate is True:
+            elif not validate:
                 break
+        # while True:
+        #     print('***', *dice, '***')
+        #     player_choice = banked_dice()
+        #     validate = check_for_cheater(dice, player_choice)
+        #     if validate == "q":
+        #         return -1, total_score
+        #     if not validate:
+        #         print("Cheater!!! Or possibly made a typo...")
+        #     elif validate is True:
+        #         break
 
         dice_count -= len(player_choice)
         round_score += GameLogic.calculate_score(player_choice)
@@ -92,9 +103,9 @@ Total score is {total_score} points""")
                     validate = check_for_cheater(dice, new_roll)
                     if validate == "q":
                         return -1, total_score
-                    if not validate:
+                    if validate is True:
                         print("Cheater!!! Or possibly made a typo...")
-                    elif validate is True:
+                    elif not validate:
                         break
 
                 dice_count -= len(new_roll)
@@ -122,11 +133,13 @@ def check_for_cheater(roll, saved_dice):
     if saved_dice == "q":
         return "q"
 
-    for die in saved_dice:
-        if die in roll:
-            return True
+    return bool(Counter(saved_dice) - Counter(roll))
 
-    return False
+    # for die in saved_dice:
+    #     if die in roll:
+    #         return True
+
+
 
 
 def is_zilch(roll):
@@ -150,12 +163,9 @@ def banked_dice():
 
 
 def input_to_tuple(input_string):
-    input_string = input_string.replace(' ', '')
-    roll_list = []
     if input_string == "q":
         return "q"
-    for i in input_string:
-        roll_list.append(int(i))
+    roll_list = tuple(int(num) for num in input_string if num.isnumeric())
     return tuple(roll_list)
 
 
