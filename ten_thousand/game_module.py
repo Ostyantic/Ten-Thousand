@@ -26,7 +26,7 @@ def play_game(roll=GameLogic.roll_dice):
 
     while round_number <= 20:
         print(f"Starting round {round_number}")  # function
-        round_score, total_score = play_round(roll, total_score)
+        round_score, total_score = play_round(roll, total_score, round_number)
         if round_score == -1:
             return total_score
         round_number += 1
@@ -35,8 +35,9 @@ def play_game(roll=GameLogic.roll_dice):
     # return total_score
 
 
-def play_round(roll, total_score):
+def play_round(roll, total_score, r):
     # banked_dice = []
+    round_number = r
     dice_rolled = roll
     round_score = 0
     dice_count = 6
@@ -44,8 +45,6 @@ def play_round(roll, total_score):
     while True:
         print(f"Rolling {len(dice_rolled(dice_count))} dice...")  # goes to dice function
         print('***', *dice_rolled(dice_count), '***')
-        # in process, subject to change
-
         player_choice = banked_dice()
         dice_count -= len(player_choice)
         if len(dice_rolled(dice_count)) == 0:
@@ -55,19 +54,26 @@ def play_round(roll, total_score):
         if player_choice == "q":
             return -1, total_score
 
-        round_score += GameLogic.calculate_score(player_choice)
+        temp_score = GameLogic.calculate_score(player_choice)
         # remaining = remaining_dice(player_choice)
         print(f"You have {GameLogic.calculate_score(player_choice)} unbanked points and {dice_count} dice remaining")
         choice = players_choice_rbq()
         if choice == "b":
+            round_score += temp_score
             total_score += round_score
             print(f"You banked {round_score} points in this round")
             return round_score, total_score
         elif choice == "r":
             updated_banked_dice = player_choice
             while True:
-                # remaining = remaining_dice(updated_banked_dice)
-
+                zilcher = is_zilch(dice_rolled(remaining))
+                print(zilcher)
+                if zilcher:
+                    print(f"""****************************************
+**        Zilch!!! Round over         **
+****************************************
+You banked {round_score} points in round {round_number}
+Total score is {total_score} points""")
                 print(f"Rolling {dice_count} dice...")
                 print('***', *dice_rolled(dice_count), '***')
                 new_roll = banked_dice()
@@ -75,22 +81,38 @@ def play_round(roll, total_score):
                     return -1, total_score
 
                 updated_banked_dice += new_roll
-                round_score += GameLogic.calculate_score(new_roll)
+
+                temp_score += GameLogic.calculate_score(new_roll)
                 # remaining = remaining_dice(updated_banked_dice)
                 # print(updated_banked_dice)
                 print(f"You have {round_score} unbanked points and {dice_count} dice remaining")
                 choice = players_choice_rbq()
                 if choice == "b":
+                    round_score += temp_score
                     total_score += round_score
                     print(f"You banked {round_score} points in this round")
                     return round_score, total_score
                 elif choice == "q":
                     return -1, total_score
-        #     round_score += GameLogic.calculate_score(updated_banked_dice)
-        #     total_score += round_score
-        #     round_score = 0
-        # elif choice == "q":
-        #     return -1, total_score
+            # possible fix(?) below
+            # round_score += GameLogic.calculate_score(updated_banked_dice)
+            # total_score += round_score
+            # round_score = 0
+        #elif choice == "q":
+            # return -1, total_score
+
+
+
+def is_zilch(roll):
+    """
+    Determines if a roll of dice results in a zilch in the game of Ten Thousand
+    :param roll: A list or tuple of integers representing the numbers rolled on each die.
+    :return: True if roll is a zilch, otherwise returns False
+    """
+    points = GameLogic.calculate_score(roll)
+    if points > 0:
+        return False
+    return True
 
 
 def banked_dice():
