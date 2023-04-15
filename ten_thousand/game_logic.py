@@ -4,6 +4,11 @@ from collections import Counter
 
 
 class GameLogic:
+    def __init__(self, mock_rolls=None):
+        self.mock_rolls = mock_rolls
+
+    def mock_roller(self, _):
+        return self.mock_rolls.pop(0)
 
     @staticmethod
     def roll_dice(n):
