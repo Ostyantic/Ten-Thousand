@@ -24,7 +24,7 @@ def play_game(roll):
     while round_number <= 20:
         print(f"Starting round {round_number}")  # function
         round_score, total_score = play_round(roll, total_score, round_number)
-        if round_score == -1:
+        if round_score == 0:
             return total_score
         round_number += 1
 
@@ -41,7 +41,8 @@ def play_round(roll, total_score, r):
         print(f"Rolling {len(dice)} dice...")
 
         while True:
-            print('***', *dice, '***')
+            print(f"*** {' '.join([str(i) for i in dice])} ***")
+            # print('***', *dice, '***')
             if zilcher:
                 round_score = 0
                 print("****************************************")
@@ -53,7 +54,7 @@ def play_round(roll, total_score, r):
             player_choice = banked_dice()
             validate = check_for_cheater(dice, player_choice)
             if validate == "q":
-                return -1, total_score
+                return total_score
             if validate is True:
                 print("Cheater!!! Or possibly made a typo...")
             elif not validate:
@@ -71,46 +72,9 @@ def play_round(roll, total_score, r):
             print(f"Total score is {total_score} points")
             return round_score, total_score
         elif choice == "q":
-            return -1, total_score
+            return total_score
         elif choice == "r":
             continue
-
-
-#             updated_banked_dice = player_choice
-#             while True:
-
-#                 dice = roll(dice_count)
-#                 print(f"Rolling {dice_count} dice...")
-#
-#                 while True:
-#                     print('***', *dice, '***')
-#                     new_roll = banked_dice()
-#                     validate = check_for_cheater(dice, new_roll)
-#                     if validate == "q":
-#                         return -1, total_score
-#                     if validate is True:
-#                         print("Cheater!!! Or possibly made a typo...")
-#                     elif not validate:
-#                         break
-#
-#                 dice_count -= len(new_roll)
-#                 if new_roll == "q":
-#                     return -1, total_score
-#                 updated_banked_dice += new_roll
-#                 round_score += GameLogic.calculate_score(new_roll)
-#                 fire_dice = hot_dice(dice_count)
-#                 if fire_dice:
-#                     dice_count = 6
-#                     print("*** HOT DICE!! ***")
-#                     break
-#                 print(f"You have {round_score} unbanked points and {dice_count} dice remaining")
-#                 choice = players_choice_rbq()
-#                 if choice == "b":
-#                     total_score += round_score
-#                     print(f"You banked {round_score} points in this round")
-#                     return round_score, total_score
-#                 elif choice == "q":
-#                     return -1, total_score
 
 
 def check_for_cheater(roll, saved_dice):
@@ -119,10 +83,6 @@ def check_for_cheater(roll, saved_dice):
         return "q"
 
     return bool(Counter(saved_dice) - Counter(roll))
-
-    # for die in saved_dice:
-    #     if die in roll:
-    #         return True
 
 
 def is_zilch(roll):
@@ -167,6 +127,6 @@ def hot_dice(length):
 
 
 if __name__ == "__main__":
-    test_three_pairs = GameLogic([(1, 1, 2, 2, 3, 3)])
-    play(test_three_pairs.mock_roller)
-    # play()
+    # test_three_pairs = GameLogic([(1, 1, 2, 2, 3, 3)])
+    # play(test_three_pairs.mock_roller)
+    play()

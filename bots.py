@@ -6,7 +6,7 @@ from ten_thousand.game_logic import GameLogic
 
 
 class BaseBot(ABC):
-    """Base class for Game bots"""
+    """Base class for Ten Thousand Game bots"""
 
     def __init__(self, print_all=False):
         self.last_print = ""
@@ -33,8 +33,10 @@ class BaseBot(ABC):
         if self.print_all:
             self.real_print(text)
         elif text.startswith("Thanks for playing."):
-            score = re.sub("\D", "", text)
-            self.total_score += int(score)
+            score_str = re.sub(r"\D", "", text)
+            if score_str:
+                score = int(score_str)
+                self.total_score += score
 
     def _mock_print(self, *args, **kwargs):
         """steps in front of the real builtin print function"""
@@ -109,7 +111,7 @@ class BaseBot(ABC):
 
         for _ in range(num_games):
             player = cls()
-
+            # game = play()
             try:
                 play()
             except SystemExit:
@@ -132,35 +134,19 @@ class NervousNellie(BaseBot):
         return "b"
 
 
-class MiddlingMargaret(BaseBot):
-    """MiddlingMargaret has a moderate playing style"""
-
+class YourBot(BaseBot):
     def _roll_bank_or_quit(self):
+        """your logic here"""
+        return "b"
 
-        if self.unbanked_points >= 500 or self.dice_remaining < 3:
-            return "b"
+    def _enter_dice(self):
+        """simulate user entering which dice to keep.
+        Defaults to all scoring dice"""
 
-        return "r"
-
-
-class QuittingQuyen(BaseBot):
-    """Quits Immediately"""
-    def _mock_input(self, *args, **kwargs):
-        """steps in front of the real builtin print function"""
-
-        if self.last_print == "(y)es to play or (n)o to decline":
-
-            return "n"
-
-    def _roll_bank_or_quit(self):
-        """decide whether to roll the dice, bank the points, or quit"""
-
-        # subclass MUST implement this method
-        return "q"
+        return super()._enter_dice()
 
 
 if __name__ == "__main__":
-    num_games = 1000
+    num_games = 100
     NervousNellie.play(num_games)
-    MiddlingMargaret.play(num_games)
-    QuittingQuyen.play(num_games)
+    YourBot.play(num_games)
