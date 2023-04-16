@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import builtins
 import re
-from ten_thousand.game import play
+from ten_thousand.game_module import play
 from ten_thousand.game_logic import GameLogic
 
 
