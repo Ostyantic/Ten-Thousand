@@ -81,26 +81,29 @@ class GameLogic:
 
             return total_score
 
-        #intro
-        #prompt to play or not, ask username
-        #if: no, decline message
-        #else play "starting round 1"
+    @staticmethod
+    def get_scorers(dice):
+        # version_3
 
-        #in the play function
-        #total_score
-        #round_number: 1,2, etc
-        #round_score: display to user
-        #dice_roll_banked:
-        #current_dice:
+        all_dice_score = GameLogic.calculate_score(dice)
 
-        # round 1 while loop <= 20
-        #roll and print 6 dice, roll string
-        #prompt enter dice to keep or bank or quit
-            #if quit farewell message, thanks for playing, such and such points
-            # if bank, add points to total score
-            #re-run loop, increment the round +1
-            # if pick dice, dice count decrements, len (current_dice), re-roll, bank/next round, or quit
-            #roll_dice = n- int
+        if all_dice_score == 0:
+            return tuple()
+
+        scorers = []
+
+        # for i in range(len(dice)):
+
+        for i, val in enumerate(dice):
+            sub_roll = dice[:i] + dice[i + 1:]
+            sub_score = GameLogic.calculate_score(sub_roll)
+
+            if sub_score != all_dice_score:
+                scorers.append(val)
+
+        return tuple(scorers)
+
+
 
 
 
